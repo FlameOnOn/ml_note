@@ -5,3 +5,19 @@
 所有的特征都在范围内，才认为分布相同
 但是，通常测试集是从整体数据中采样的一部分，所以只要你充分采样，分布就应该相同
 那如果遇到分布不一致的特征,应该考虑分类数据，再建立一个模型,这种情况可能意味着存在不同情况的数据,把特征不同的数据，混在一起了
+
+python计算峰度和偏度的代码:
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+data = list(np.random.randn(10000))
+plt.hist(data,100,density=True,facecolor='g',alpha=0.9)
+plt.show()
+
+s = pd.Series(data)
+#偏度
+print(s.skew())
+#峰度
+print(s.kurt())
