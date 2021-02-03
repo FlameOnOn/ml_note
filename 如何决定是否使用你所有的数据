@@ -3,5 +3,16 @@
 
 这两个问题可以一并回答. 如果增加的数据对我们的学习目标有一定的帮助, 而且我们的模型有学习能力,可以学到即使是分布不一致的数据的一些高维特征,那就是可以增加数据的.
 如果没有足够大的神经网络,那么你应该更加关注训练数据，需要与开发集/测试集的分布相匹配。
-如果你认为有些数据没有任何帮助，那么应该将这些数据排除在计算原因之外
+如果你认为有些数据没有任何帮助，那么应该将这些数据排除在计算原因之外.
+
+
+添加了分布不一致的数据后,可以给一致的数据那部分样本添加大点的权重. 或者时间序列的话,离现在的越近的样本添加越大的权重.权重就是作用在损失函数上的,权重越大的样本对损失函数的变化贡献越大,所以在学的时候
+就会着重让这个差别变小,模型也就会更偏向于学到这部分数据的特性.
+
+xgboost可以用这个方法给每个样本添加权重. sample_weight=curr_sample_weight
+self._model.fit(x_train, y_train,sample_weight=curr_sample_weight,
+                        verbose=True,
+                        early_stopping_rounds=self._params['early_stopping_rounds'],
+                        eval_set=self._eval_set,
+                        eval_metric=self._params['eval_metric'])
 
