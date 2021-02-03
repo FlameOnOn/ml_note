@@ -16,3 +16,7 @@ self._model.fit(x_train, y_train,sample_weight=curr_sample_weight,
                         eval_set=self._eval_set,
                         eval_metric=self._params['eval_metric'])
 
+
+通过对分布不一致的样本(可能是其他途径获取到的样本)赋予更少的权重，你不需要构建一个庞大的神经网络来确保算法在这两种类型的任务上都能很好地完成。只有当你怀疑这些额外的数据（网络图像）与开发/测试集
+分布不一致，或者额外的数据规模比与相同分布的开发/测试集（手机图像）数据规模大得多时，这种类型的权重加权才需要
+
