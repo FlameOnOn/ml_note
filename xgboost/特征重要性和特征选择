@@ -1,0 +1,18 @@
+xgboost可以用来排序.把目标函数改了就行
+xgboost可以自定义损失函数, 但是相应的评估函数也要修改. 自定义目标函数需要二次可微. 通过自定义目标函数得到的预测值是模型预测的原始值,不会进行任何转换
+
+
+xgboost有5个衡量特征重要性的指标:weight,gain,cover,total_gain,togal_cover. 默认方式是weight,表示在模型中一个特征被选作分裂特征的次数,gain表示特征在模型中被使用的平均收益,收益通过损失函数的变化度量.
+cover表示特征在模型中被使用的平均覆盖率,通过节点的二阶梯度和来度量
+xgboost提供了两个获取特征重要性评分的方法,get_fscore和get_score. get_fscore使用默认的weight指标计算特征重要性评分. 而get_score可通过参数选择,weight,gain或者cover. importance = bst.get_score(importance_type='gain')
+xgboost可用plot_importance画特征重要性.plot_importance使用的weight画的,可通过feature_importance使用其他权重
+
+基于特征重要性的特征选择.
+可以jiehesciket-learn的selectfrommodel进行特征选择. sklearn的feature_importance使用的是get_fscore(). 所以特征选择的思路是:
+1. 获取所有特征评分,去重组成一个list
+2. 遍历这个list, 分别将threshold设置成这个list的元素, 使用selection=SelectFromModel(model,threshold=threshold,prefit=True) 训练模型和评估模型. 遍历完了就知道最好的模型是哪个了
+3. 通过Selection.get_support()可以知道都选择了哪些特征. selection.get_support(true)可以打印出被选择特征的索引
+
+判别单条预测结果的原因有两个工具, SHAP和Saabas.
+
+xgboost提供了可视化决策树的接口, 即plot_tree
